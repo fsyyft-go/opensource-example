@@ -1,0 +1,21 @@
+name: 检查、测试、构建
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 代码拉取
+        uses: actions/checkout@v3
+
+      - name: 安装 go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+
+      - name: 检查
+        run: |
+          go vet -v ./...
+
+      - name: 测试
+        run: |
+          go test -v ./...
