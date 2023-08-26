@@ -20,4 +20,4 @@ jobs:
 
       - name: 测试
         run: |
-          go test -v -bench=. ./...
+          make test

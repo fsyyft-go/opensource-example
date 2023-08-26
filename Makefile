@@ -81,10 +81,10 @@ test-cmd/example:
 	# 准备测试 cmd/example。
 	@$(CMD_MKDIR) -p $(APP_OUTPUT)/out/$(subst test-,,$@)
 
-ifneq ($(ENV_ENABLE_DAEMON),1)
-	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
+ifeq ($(ENV_ENABLE_DAEMON),1)
+	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
 else
-	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
+	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
 		 	-coverprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/conver.out   \
 			-cpuprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out        \
 			-memprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out        \
