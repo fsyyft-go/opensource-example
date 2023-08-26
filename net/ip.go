@@ -30,7 +30,7 @@ type IPExtend struct {
 
 // IsIPv4Public 是否公网地址。
 func (e *IPExtend) IsIPv4Public() bool {
-	isIPv4Public := e.IsIPV4() && !e.IsIPv4Inner() && !e.IsGlobalUnicast() &&
+	isIPv4Public := e.IsIPv4() && !e.IsIPv4Inner() &&
 		!(inner000.Contains(*e.IP) || inner127.Contains(*e.IP) || inner169254.Contains(*e.IP)) &&
 		!(inner192000.Contains(*e.IP) || inner192000002.Contains(*e.IP) || inner192088099.Contains(*e.IP)) &&
 		!(inner198018.Contains(*e.IP) || inner198051100.Contains(*e.IP) || inner203000113.Contains(*e.IP)) &&
@@ -40,17 +40,17 @@ func (e *IPExtend) IsIPv4Public() bool {
 
 // IsIPv4Inner 是否是内网地址，不包含回环地址其它测试地址。
 func (e *IPExtend) IsIPv4Inner() bool {
-	isIPv4Inner := e.IsIPV4() && (inner010.Contains(*e.IP) || inner100064.Contains(*e.IP) || inner172016.Contains(*e.IP) || inner192168.Contains(*e.IP))
+	isIPv4Inner := e.IsIPv4() && (inner010.Contains(*e.IP) || inner100064.Contains(*e.IP) || inner172016.Contains(*e.IP) || inner192168.Contains(*e.IP))
 	return isIPv4Inner
 }
 
-// IsIPV4 是否是 IPV4 格式的地址。
-func (e *IPExtend) IsIPV4() bool {
+// IsIPv4 是否是 IPv4 格式的地址。
+func (e *IPExtend) IsIPv4() bool {
 	return nil != e.IP.To4()
 }
 
-// IsIPV6 是否是 IPV6 格式的地址。
-func (e *IPExtend) IsIPV6() bool {
+// IsIPv6 是否是 IPv6 格式的地址。
+func (e *IPExtend) IsIPv6() bool {
 	return nil != e.IP.To16()
 }
 
@@ -64,12 +64,12 @@ func IsIPv4Inner(ip net.IP) bool {
 	return (&IPExtend{IP: &ip}).IsIPv4Inner()
 }
 
-// IsIPV4 是否是 IPV4 格式的地址。
-func IsIPV4(ip net.IP) bool {
-	return (&IPExtend{IP: &ip}).IsIPV4()
+// IsIPv4 是否是 IPv4 格式的地址。
+func IsIPv4(ip net.IP) bool {
+	return (&IPExtend{IP: &ip}).IsIPv4()
 }
 
-// IsIPV6 是否是 IPV6 格式的地址。
-func IsIPV6(ip net.IP) bool {
-	return (&IPExtend{IP: &ip}).IsIPV6()
+// IsIPv6 是否是 IPv6 格式的地址。
+func IsIPv6(ip net.IP) bool {
+	return (&IPExtend{IP: &ip}).IsIPv6()
 }
