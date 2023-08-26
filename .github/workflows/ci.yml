@@ -14,8 +14,8 @@ jobs:
 
       - name: 检查
         run: |
-          go vet -v ./...
+          make test-pre
 
       - name: 测试
         run: |
-          go test -v ./...
+          make test
