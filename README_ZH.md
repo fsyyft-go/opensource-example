@@ -17,6 +17,8 @@
 
 ---
 
+### [变更记录](CHANGELOG.md)
+
 ### 如何选择开源协议
 
 ![](docs/images/free_software_licenses_1.png)
