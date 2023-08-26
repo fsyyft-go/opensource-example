@@ -56,7 +56,7 @@ CMD_UNZIP=unzip
 CMD_ZIP=zip
 
 .PHONY: test
-test: test-cmd/example
+test: test-cmd/example test-runtime/goroutine test-testing
 	# 准备单元测试后置工作。
 	-@$(CMD_RM) -rf *.test
 	@$(CMD_GO) mod tidy
@@ -95,6 +95,46 @@ else
 	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/block.out   > $(APP_OUTPUT)/out/$(subst test-,,$@)/block.pdf
 endif
 	# 完成测试 cmd/example。
+
+.PHONY: test-runtime/goroutine
+test-runtime/goroutine:
+	# 准备测试 runtime/goroutine。
+	@$(CMD_MKDIR) -p $(APP_OUTPUT)/out/$(subst test-,,$@)
+
+ifeq ($(ENV_ENABLE_DAEMON),1)
+	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
+else
+	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
+		 	-coverprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/conver.out   \
+			-cpuprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out        \
+			-memprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out        \
+			-blockprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/block.out
+
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.pdf
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.pdf
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/block.out   > $(APP_OUTPUT)/out/$(subst test-,,$@)/block.pdf
+endif
+	# 完成测试 runtime/goroutine。
+
+.PHONY: test-testing
+test-testing:
+	# 准备测试 testing。
+	@$(CMD_MKDIR) -p $(APP_OUTPUT)/out/$(subst test-,,$@)
+
+ifeq ($(ENV_ENABLE_DAEMON),1)
+	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
+else
+	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
+		 	-coverprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/conver.out   \
+			-cpuprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out        \
+			-memprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out        \
+			-blockprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/block.out
+
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.pdf
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.pdf
+	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/block.out   > $(APP_OUTPUT)/out/$(subst test-,,$@)/block.pdf
+endif
+	# 完成测试 testing。
 
 .PHONY: clean
 clean:
