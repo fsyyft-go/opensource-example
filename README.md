@@ -5,13 +5,14 @@
 ![CircleCI](https://img.shields.io/circleci/build/github/fsyyft-go/opensource-example/main)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/fsyyft-go/opensource-example/ci.yml)
 
-![GitHub](https://img.shields.io/github/license/fsyyft-go/opensource-example)
+[![GitHub](https://img.shields.io/github/license/fsyyft-go/opensource-example)](https://github.com/fsyyft-go/opensource-example/blob/develop/LICENSE)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fsyyft-go/opensource-example)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/fsyyft-go/opensource-example)
 
 ![GitHub language count](https://img.shields.io/github/languages/count/fsyyft-go/opensource-example)
 ![GitHub top language](https://img.shields.io/github/languages/top/fsyyft-go/opensource-example)
-![GitHub go.mod Go version (subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/fsyyft-go/opensource-example)
+[![GitHub go.mod Go version (subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/fsyyft-go/opensource-example)](https://github.com/fsyyft-go/opensource-example/blob/develop/go.mod)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fsyyft-go/opensource-example)](https://goreportcard.com/report/github.com/fsyyft-go/opensource-example)
 
 ---
 
