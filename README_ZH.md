@@ -38,3 +38,7 @@
 #### 徽章
 
 - [Shields.io: Concise, consistent, and legible badges](https://shields.io/)
+
+#### 工程规范
+
+- [Go 标准目录结构](https://github.com/golang-standards/project-layout)
