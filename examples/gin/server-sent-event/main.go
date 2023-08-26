@@ -9,6 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	userName     = "admin"
+	userPassword = "admin888"
+
+	addr = "127.0.0.1:8085"
+)
+
 // It keeps a list of clients those are currently attached
 // and broadcasting events to those clients.
 type Event struct {
@@ -46,9 +53,9 @@ func main() {
 		}
 	}()
 
-	// Basic Authentication
+	// 全站启用基本的身份认证。
 	authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
-		"admin": "admin123", // username : admin, password : admin123
+		userName: userPassword,
 	}))
 
 	// Authorized client can stream the event
@@ -75,7 +82,7 @@ func main() {
 	// Parse Static files
 	router.StaticFile("/", "./public/index.html")
 
-	router.Run("127.0.0.1:8085")
+	router.Run(addr)
 }
 
 // Initialize event and Start procnteessing requests
