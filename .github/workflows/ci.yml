@@ -14,6 +14,15 @@ jobs:
         with:
           go-version: "1.21"
 
+      - name: 显示 go 环境信息
+        run: |
+          go env
+
+      - name: 安装 golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
+          golangci-lint version
+
       - name: 检查
         run: |
           make test-pre
