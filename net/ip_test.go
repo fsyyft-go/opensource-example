@@ -37,6 +37,22 @@ func TestIsIPv4Public(t *testing.T) {
 
 }
 
+func TestIsIPv4Inner(t *testing.T) {
+	assertions := assert.New(t)
+
+	cases := []testIPCase{
+		{net.IPv4(192, 168, 0, 1), true},
+		{net.IPv4(120, 27, 53, 19), false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.ip.String(), func(t *testing.T) {
+			r := IsIPv4Inner(c.ip)
+			assertions.Equal(c.ret, r)
+		})
+	}
+}
+
 func TestIsIPv4(t *testing.T) {
 	assertions := assert.New(t)
 
@@ -53,20 +69,8 @@ func TestIsIPv4(t *testing.T) {
 	}
 }
 
-func TestIsIPv4Inner(t *testing.T) {
-	assertions := assert.New(t)
-
-	cases := []testIPCase{
-		{net.IPv4(192, 168, 0, 1), true},
-		{net.IPv4(120, 27, 53, 19), false},
-	}
-
-	for _, c := range cases {
-		t.Run(c.ip.String(), func(t *testing.T) {
-			r := IsIPv4Inner(c.ip)
-			assertions.Equal(c.ret, r)
-		})
-	}
+func TestIsIPv6(t *testing.T) {
+	// TODO 补单元测试。
 }
 
 func TestContains(t *testing.T) {
