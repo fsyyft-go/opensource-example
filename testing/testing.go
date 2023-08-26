@@ -4,8 +4,11 @@ import (
 	"fmt"
 )
 
-const (
-	logHeader = "=-=       "
+var (
+	// logHeader 日志输出前缀。
+	//
+	// 使用 var 而不是使用 const，可以根据需要在构建时重新赋值。
+	logHeader = "-=>       "
 )
 
 func Println(a ...interface{}) {
