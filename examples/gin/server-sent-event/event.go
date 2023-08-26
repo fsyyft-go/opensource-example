@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	_ Event = (*event)(nil)
+)
+
 const (
 	contextClientChanName = "clientChan"
 )
@@ -30,9 +34,15 @@ type (
 		// TotalClients 所有客户端。
 		TotalClients map[chan string]bool
 	}
+
+	Event interface {
+		Start(ctx context.Context)
+		SendMessage(message string)
+		ServeHTTP() gin.HandlerFunc
+	}
 )
 
-func (e *event) serveHTTP() gin.HandlerFunc {
+func (e *event) ServeHTTP() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 初始化客户端连接通道。
 		clientChan := make(ClientChan)
@@ -78,4 +88,24 @@ LOOP:
 		}
 
 	}
+}
+
+func (e *event) Start(ctx context.Context) {
+	go e.listen(ctx)
+}
+
+func (e *event) SendMessage(message string) {
+	e.Message <- message
+}
+
+// newEvent 一个新的事件管理器。
+func newEvent() Event {
+	e := &event{
+		Message:       make(chan string),
+		NewClients:    make(chan chan string),
+		ClosedClients: make(chan chan string),
+		TotalClients:  make(map[chan string]bool),
+	}
+
+	return e
 }

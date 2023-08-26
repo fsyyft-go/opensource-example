@@ -13,14 +13,17 @@ const (
 	userName     = "admin"
 	userPassword = "admin888"
 
-	addr = "127.0.0.1:8085"
+	addr = "127.0.0.1:8086"
 )
 
 func main() {
 	router := gin.Default()
 
+	ctx := context.Background()
+
 	// Initialize new streaming server
-	stream := NewServer()
+	stream := newEvent()
+	stream.Start(ctx)
 
 	// We are streaming current time to clients in the interval 10 seconds
 	go func() {
@@ -30,7 +33,8 @@ func main() {
 			currentTime := fmt.Sprintf("The Current Time Is %v", now)
 
 			// Send current time to clients message channel
-			stream.Message <- currentTime
+			stream.SendMessage(currentTime)
+
 		}
 	}()
 
@@ -41,7 +45,7 @@ func main() {
 
 	// Authorized client can stream the event
 	// Add event-streaming headers
-	authorized.GET("/stream", HeadersMiddleware(), stream.serveHTTP(), func(c *gin.Context) {
+	authorized.GET("/stream", HeadersMiddleware(), stream.ServeHTTP(), func(c *gin.Context) {
 		v, ok := c.Get("clientChan")
 		if !ok {
 			return
@@ -64,20 +68,6 @@ func main() {
 	router.StaticFile("/", "./public/index.html")
 
 	router.Run(addr)
-}
-
-// Initialize event and Start procnteessing requests
-func NewServer() *event {
-	e := &event{
-		Message:       make(chan string),
-		NewClients:    make(chan chan string),
-		ClosedClients: make(chan chan string),
-		TotalClients:  make(map[chan string]bool),
-	}
-
-	go e.listen(context.TODO())
-
-	return e
 }
 
 func HeadersMiddleware() gin.HandlerFunc {
