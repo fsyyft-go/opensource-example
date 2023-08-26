@@ -74,7 +74,7 @@ test-cmd/example:
 
 .PHONY: clean
 clean:
-	@$(CMD_CLEAR)
+	-@$(CMD_CLEAR)
 	# 准备清理已编译文件。
 	-@$(CMD_RM) -rf $(APP_OUTPUT)
 	-@$(CMD_RM) -rf $(APP_LOGS)
