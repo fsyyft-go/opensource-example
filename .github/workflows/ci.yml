@@ -3,7 +3,7 @@ on: [push]
 env:
   MAKE_ENABLE_DAEMON: 1
 jobs:
-  test:
+  linux:
     runs-on: ubuntu-latest
     steps:
       - name: 代码拉取
