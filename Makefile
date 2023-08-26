@@ -2,6 +2,26 @@
 APP_OUTPUT=./bin
 APP_LOGS=./logs
 
+# 读取环境变量。
+# 完整工作方式，示例：make MAKE_FULL=1。
+EVN_FULL=${MAKE_FULL}
+# 更新软件包，示例：make MAKE_GO_GET=1 bindata。
+ENV_GOGET=${MAKE_GO_GET}
+# 压缩包，示例：make MAKE_COMPRESSION=1
+EVN_COMPRESSION=${MAKE_COMPRESSION}
+# 打包，示例：make MAKE_PACK=1
+ENV_PACK=${MAKE_PACK}
+# 打开 CGO，开启后只针对非交叉编译的有效，示例：make MAKE_ENABLE_CGO=1。
+ENV_ENABLE_CGO=${MAKE_ENABLE_CGO}
+# 是否后台工作状态。
+ENV_ENABLE_DAEMON=${MAKE_ENABLE_DAEMON}
+
+ifeq ($(EVN_FULL),1)
+	ENV_GOGET=1
+	EVN_COMPRESSION=1
+	ENV_PACK=1
+endif
+
 # 设置命令路径。
 CMD_CAT=cat
 CMD_CD=cd
@@ -61,6 +81,9 @@ test-cmd/example:
 	# 准备测试 cmd/example。
 	@$(CMD_MKDIR) -p $(APP_OUTPUT)/out/$(subst test-,,$@)
 
+ifneq ($(ENV_ENABLE_DAEMON),1)
+	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
+else
 	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
 		 	-coverprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/conver.out   \
 			-cpuprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out        \
@@ -70,12 +93,15 @@ test-cmd/example:
 	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.pdf
 	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out     > $(APP_OUTPUT)/out/$(subst test-,,$@)/mem.pdf
 	@$(CMD_GO) tool pprof -pdf $(APP_OUTPUT)/out/$(subst test-,,$@)/block.out   > $(APP_OUTPUT)/out/$(subst test-,,$@)/block.pdf
+endif
 	# 完成测试 cmd/example。
 
 .PHONY: clean
 clean:
-	-@$(CMD_CLEAR)
 	# 准备清理已编译文件。
+ifneq ($(ENV_ENABLE_DAEMON),1)
+	@$(CMD_CLEAR)
+endif
 	-@$(CMD_RM) -rf $(APP_OUTPUT)
 	-@$(CMD_RM) -rf $(APP_LOGS)
 	@$(CMD_MKDIR) $(APP_OUTPUT)

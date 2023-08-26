@@ -1,5 +1,7 @@
 name: 检查、测试、构建
 on: [push]
+env:
+  MAKE_ENABLE_DAEMON: 1
 jobs:
   test:
     runs-on: ubuntu-latest
