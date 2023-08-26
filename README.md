@@ -5,7 +5,7 @@
 ![CircleCI](https://img.shields.io/circleci/build/github/fsyyft-go/opensource-example/main)
 [![检查、测试、构建](https://github.com/fsyyft-go/opensource-example/actions/workflows/ci.yml/badge.svg)](https://github.com/fsyyft-go/opensource-example/actions/workflows/ci.yml)
 
-[![GitHub](https://img.shields.io/github/license/fsyyft-go/opensource-example)](https://github.com/fsyyft-go/opensource-example/blob/develop/LICENSE)
+[![GitHub](https://img.shields.io/github/license/fsyyft-go/opensource-example)](LICENSE)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fsyyft-go/opensource-example)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/fsyyft-go/opensource-example)
 
