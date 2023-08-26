@@ -2,7 +2,7 @@
 
 ---
 
-![CircleCI](https://img.shields.io/circleci/build/github/fsyyft-go/opensource-example/main)
+[![CircleCI](https://img.shields.io/circleci/build/github/fsyyft-go/opensource-example/main)](./)
 [![检查、测试、构建](https://github.com/fsyyft-go/opensource-example/actions/workflows/ci.yml/badge.svg)](https://github.com/fsyyft-go/opensource-example/actions/workflows/ci.yml)
 
 [![GitHub](https://img.shields.io/github/license/fsyyft-go/opensource-example)](https://github.com/fsyyft-go/opensource-example/blob/develop/LICENSE)
