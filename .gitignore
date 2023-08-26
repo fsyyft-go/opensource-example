@@ -1,0 +1,29 @@
+# 从现有项目拷贝的，不是最佳实践。
+# TODO 需要找时间优化。
+.idea
+.DS_Store
+*.log
+*.test
+*.o
+*.idea
+*.vscode
+*.dll
+*.exe
+*.mmdb
+*.key
+*.tar.gz
+*.test
+*.wasm
+**/wasm_exec.js
+*.pprof
+*.memprof
+**/bin
+**/data
+**/debug
+**/docs
+**/logs
+**/assets/embed/**
+**/swagger
+**/*.pb.go
+**/*.pb.gw.go
+**/*_mock_test.go
