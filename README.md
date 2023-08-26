@@ -12,7 +12,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/fsyyft-go/opensource-example)
 ![GitHub top language](https://img.shields.io/github/languages/top/fsyyft-go/opensource-example)
 [![GitHub go.mod Go version (subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/fsyyft-go/opensource-example)](https://github.com/fsyyft-go/opensource-example/blob/develop/go.mod)
-[![Go Doc](https://pkg.go.dev/badge/github.com/fsyyft-go/opensource-example)](https://pkg.go.dev/badge/github.com/fsyyft-go/opensource-example)
+[![Go Doc](https://pkg.go.dev/badge/github.com/fsyyft-go/opensource-example)](https://pkg.go.dev/github.com/fsyyft-go/opensource-example)
 [![Go Report Card](https://goreportcard.com/badge/github.com/fsyyft-go/opensource-example)](https://goreportcard.com/report/github.com/fsyyft-go/opensource-example)
 
 ---
