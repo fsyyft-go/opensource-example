@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	oeTesting "github.com/fsyyft-go/opensource-example/testing"
 )
 
 func TestGetGoID(t *testing.T) {
@@ -24,6 +26,6 @@ func TestGetGoID(t *testing.T) {
 		assertions.NotEqual(idOuter, idInternal)
 		// 在没有复用的情况下，里的一般会比外的大。
 		assertions.LessOrEqual(idOuter, idInternal)
-		// fmt.Println(idInternal, idOuter)
+		oeTesting.Println(idInternal, idOuter)
 	})
 }
