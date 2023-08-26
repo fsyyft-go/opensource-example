@@ -70,24 +70,7 @@ func main() {
 
 	// Authorized client can stream the event
 	// Add event-streaming headers
-	authorized.GET("/stream", HeadersMiddleware(), stream.ServeHTTP(), func(c *gin.Context) {
-		v, ok := c.Get("clientChan")
-		if !ok {
-			return
-		}
-		clientChan, ok := v.(ClientChan)
-		if !ok {
-			return
-		}
-		c.Stream(func(w io.Writer) bool {
-			// Stream message to client from message channel
-			if msg, ok := <-clientChan; ok {
-				c.SSEvent("message", msg)
-				return true
-			}
-			return false
-		})
-	})
+	authorized.GET("/stream", streamHeadersMiddleware, stream.ServeHTTP, streamHandler)
 
 	router.GET("/", func(ctx *gin.Context) {
 		// 直接输出而不是使用静态 HTML 本地文件，在调用 go run 时可以不需要进入当前目录。
@@ -98,12 +81,29 @@ func main() {
 	router.Run(addr)
 }
 
-func HeadersMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Content-Type", "text/event-stream")
-		c.Writer.Header().Set("Cache-Control", "no-cache")
-		c.Writer.Header().Set("Connection", "keep-alive")
-		c.Writer.Header().Set("Transfer-Encoding", "chunked")
-		c.Next()
+func streamHeadersMiddleware(c *gin.Context) {
+	c.Writer.Header().Set("Content-Type", "text/event-stream")
+	c.Writer.Header().Set("Cache-Control", "no-cache")
+	c.Writer.Header().Set("Connection", "keep-alive")
+	c.Writer.Header().Set("Transfer-Encoding", "chunked")
+	c.Next()
+}
+
+func streamHandler(c *gin.Context) {
+	v, ok := c.Get("clientChan")
+	if !ok {
+		return
 	}
+	clientChan, ok := v.(ClientChan)
+	if !ok {
+		return
+	}
+	c.Stream(func(w io.Writer) bool {
+		// Stream message to client from message channel
+		if msg, ok := <-clientChan; ok {
+			c.SSEvent("message", msg)
+			return true
+		}
+		return false
+	})
 }

@@ -38,27 +38,25 @@ type (
 	Event interface {
 		Start(ctx context.Context)
 		SendMessage(message string)
-		ServeHTTP() gin.HandlerFunc
+		ServeHTTP(c *gin.Context)
 	}
 )
 
-func (e *event) ServeHTTP() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// 初始化客户端连接通道。
-		clientChan := make(ClientChan)
+func (e *event) ServeHTTP(c *gin.Context) {
+	// 初始化客户端连接通道。
+	clientChan := make(ClientChan)
 
-		// 发送新创建的连接消息。
-		e.NewClients <- clientChan
+	// 发送新创建的连接消息。
+	e.NewClients <- clientChan
 
-		defer func() {
-			// 发送关闭的连接消息。
-			e.ClosedClients <- clientChan
-		}()
+	defer func() {
+		// 发送关闭的连接消息。
+		e.ClosedClients <- clientChan
+	}()
 
-		c.Set(contextClientChanName, clientChan)
+	c.Set(contextClientChanName, clientChan)
 
-		c.Next()
-	}
+	c.Next()
 }
 
 // listen 监听所有消息。
