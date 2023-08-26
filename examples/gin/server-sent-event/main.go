@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"io"
+	"math/rand"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,8 @@ const (
 	userName     = "admin"
 	userPassword = "admin888"
 
-	addr = "127.0.0.1:44444"
+	timeLayout = "2006-01-02T15:04:05.999-0700"
+	addr       = "127.0.0.1:44444"
 
 	indexHtml = `
 <!doctype html>
@@ -51,17 +52,7 @@ func main() {
 	stream.Start(ctx)
 
 	// We are streaming current time to clients in the interval 10 seconds
-	go func() {
-		for {
-			time.Sleep(time.Second * 10)
-			now := time.Now().Format("2006-01-02 15:04:05")
-			currentTime := fmt.Sprintf("The Current Time Is %v", now)
-
-			// Send current time to clients message channel
-			stream.SendMessage(currentTime)
-
-		}
-	}()
+	go genMessage(ctx, stream)
 
 	// 全站启用基本的身份认证。
 	authorized := router.Group("/", gin.BasicAuth(gin.Accounts{
@@ -106,4 +97,32 @@ func streamHandler(c *gin.Context) {
 		}
 		return false
 	})
+}
+
+func genMessage(ctx context.Context, event Event) {
+	randDuration := func() time.Duration {
+		i := rand.Intn(10)
+		if 0 == i {
+			i = 1
+		}
+		return time.Duration(i) * time.Second
+	}
+
+	ticker := time.NewTicker(randDuration())
+LOOP:
+	for {
+		select {
+		case <-ticker.C:
+			{
+				ticker.Reset(randDuration())
+				now := time.Now().Format(timeLayout)
+				event.SendMessage(now)
+			}
+		case <-ctx.Done():
+			{
+				ticker.Stop()
+				break LOOP
+			}
+		}
+	}
 }
