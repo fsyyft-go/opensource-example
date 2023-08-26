@@ -84,7 +84,7 @@ test-cmd/example:
 ifeq ($(ENV_ENABLE_DAEMON),1)
 	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)
 else
-	$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
+	@$(CMD_GO) test -v -bench=. ./$(subst test-,,$@)                        \
 		 	-coverprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/conver.out   \
 			-cpuprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/cpu.out        \
 			-memprofile=$(APP_OUTPUT)/out/$(subst test-,,$@)/mem.out        \
@@ -99,7 +99,9 @@ endif
 .PHONY: clean
 clean:
 	# 准备清理已编译文件。
-ifneq ($(ENV_ENABLE_DAEMON),1)
+ifeq ($(ENV_ENABLE_DAEMON),1)
+	# 后台工作，无需清屏。
+else
 	@$(CMD_CLEAR)
 endif
 	-@$(CMD_RM) -rf $(APP_OUTPUT)
@@ -109,7 +111,7 @@ endif
 	@$(CMD_MKDIR) $(APP_OUTPUT)/test
 	@$(CMD_MKDIR) $(APP_OUTPUT)/darwin_amd64
 	@$(CMD_MKDIR) $(APP_OUTPUT)/linux_amd64
-	@$(CMD_MKDIR) $(APP_OUTPUT)/linux_arm
+	@$(CMD_MKDIR) $(APP_OUTPUT)/linux_arm64
 	@$(CMD_MKDIR) $(APP_OUTPUT)/windows_amd64
 	@$(CMD_MKDIR) $(APP_LOGS)
 	@$(CMD_GO) mod tidy
